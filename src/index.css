@@ -22,8 +22,8 @@ ul {
 }
 
 nav {
-  margin: 20px 0;
-  text-align: center;
+  margin: 2em 1em;
+  font-size: 1.1em;
 }
 
 .movies-grid {
@@ -78,4 +78,16 @@ nav {
 .actor-name {
   font-size: 16px;
   font-weight: bold;
+}
+
+.pagination__area,
+.actors__header h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.actors__header input {
+  position: absolute;
+  right: 2em;
+  top: 7em;
 }

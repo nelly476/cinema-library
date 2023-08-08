@@ -30,7 +30,7 @@ const ActorListPage = () => {
   }, [dispatch, page, debouncedQuery]);
 
   return (
-    <div>
+    <div className="actors__header">
       <h1>Popular Actors</h1>
       <input
         type="text"
@@ -45,7 +45,7 @@ const ActorListPage = () => {
         ))}
       </div>
 
-      <div>
+      <footer className="pagination__area">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
@@ -54,7 +54,7 @@ const ActorListPage = () => {
         </button>
         <span>Page {page}</span>
         <button onClick={() => setPage((prev) => prev + 1)}>Next</button>
-      </div>
+      </footer>
     </div>
   );
 };

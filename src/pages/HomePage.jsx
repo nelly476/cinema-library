@@ -71,7 +71,7 @@ const HomePage = () => {
         </div>
       </main>
 
-      <footer>
+      <footer className="pagination__area">
         <button
           onClick={() => setPage((prevPage) => prevPage - 1)}
           disabled={page <= 1}
