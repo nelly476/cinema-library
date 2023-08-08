@@ -5,8 +5,11 @@ const API_KEY = "327ddeac79bb24b66e1a04c51649ce6d";
 
 const initialState = {
   movies: [],
+  currentMovie: null,
   status: "idle",
   error: null,
+  movieDetailsStatus: "idle",
+  movieDetailsError: null,
 };
 
 export const fetchTopRatedMovies = createAsyncThunk(
@@ -61,6 +64,19 @@ export const searchMovies = createAsyncThunk(
   }
 );
 
+export const fetchMovieDetails = createAsyncThunk(
+  "movies/fetchMovieDetails",
+  async (movieId) => {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/movie/${movieId}?api_key=${API_KEY}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  }
+);
+
 const moviesSlice = createSlice({
   name: "movies",
   initialState,
@@ -89,9 +105,26 @@ const moviesSlice = createSlice({
       .addCase(searchMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.movies = action.payload.results;
+      })
+      .addCase(fetchMovieDetails.pending, (state) => {
+        state.movieDetailsStatus = "loading";
+      })
+      .addCase(fetchMovieDetails.fulfilled, (state, action) => {
+        state.movieDetailsStatus = "succeeded";
+        state.currentMovie = action.payload;
+      })
+      .addCase(fetchMovieDetails.rejected, (state, action) => {
+        state.movieDetailsStatus = "failed";
+        state.movieDetailsError = action.error.message;
       });
-    //more cases if additional thunks
   },
 });
+
+// In your slice or a separate selectors file
+export const selectCurrentMovie = (state) => state.movies.currentMovie;
+export const selectMovieDetailsStatus = (state) =>
+  state.movies.movieDetailsStatus;
+export const selectMovieDetailsError = (state) =>
+  state.movies.movieDetailsError;
 
 export default moviesSlice.reducer;
