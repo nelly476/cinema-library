@@ -11,9 +11,9 @@ const initialState = {
 
 export const fetchTopRatedMovies = createAsyncThunk(
   "movies/fetchTopRated",
-  async () => {
+  async (page = 1) => {
     const response = await fetch(
-      `${TMDB_BASE_URL}/movie/top_rated?api_key=${API_KEY}`
+      `${TMDB_BASE_URL}/movie/top_rated?api_key=${API_KEY}&page=${page}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -22,7 +22,44 @@ export const fetchTopRatedMovies = createAsyncThunk(
   }
 );
 
-// ... add more thunks for other filters (e.g., popular, recent) ...
+export const fetchPopularMovies = createAsyncThunk(
+  "movies/fetchPopular",
+  async (page = 1) => {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  }
+);
+
+export const fetchRecentMovies = createAsyncThunk(
+  "movies/fetchRecent",
+  async (page = 1) => {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/movie/now_playing?api_key=${API_KEY}&page=${page}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  }
+);
+
+export const searchMovies = createAsyncThunk(
+  "movies/searchMovies",
+  async ({ query, page = 1 }) => {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/search/movie?query=${query}&api_key=${API_KEY}&page=${page}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  }
+);
 
 const moviesSlice = createSlice({
   name: "movies",
@@ -35,14 +72,25 @@ const moviesSlice = createSlice({
       })
       .addCase(fetchTopRatedMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
-
         state.movies = action.payload.results;
       })
       .addCase(fetchTopRatedMovies.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(fetchPopularMovies.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.movies = action.payload.results;
+      })
+      .addCase(fetchRecentMovies.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.movies = action.payload.results;
+      })
+      .addCase(searchMovies.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.movies = action.payload.results;
       });
-    // Handle other thunk cases if more thunks
+    //more cases if additional thunks
   },
 });
 

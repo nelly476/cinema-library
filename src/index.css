@@ -1,0 +1,41 @@
+.home-container {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #222;
+  color: white;
+}
+
+.logo {
+  height: 50px;
+}
+
+nav {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.movie-card img {
+  max-width: 100%;
+  border-radius: 8px;
+}
